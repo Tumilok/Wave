@@ -23,9 +23,14 @@ public class KeyInput extends KeyAdapter {
 				if (key == KeyEvent.VK_UP || key == KeyEvent.VK_W) tempObject.setVelY(-2);
 				if (key == KeyEvent.VK_DOWN || key == KeyEvent.VK_S) tempObject.setVelY(2);
 			}
+			if (tempObject.getID() == ID.Ball) {
+				if (key == KeyEvent.VK_SPACE) {
+					Game.isStart = true;
+				}
+			}
 		}
 		
-		if (key == KeyEvent.VK_ESCAPE) System.exit(1);
+		if (key == KeyEvent.VK_ESCAPE) System.exit(1); 
 	}
 	
 	public void keyReleased(KeyEvent e) {

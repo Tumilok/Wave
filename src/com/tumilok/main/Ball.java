@@ -8,54 +8,71 @@ public class Ball extends GameObject{
 	private int radius;
 	
 	Handler handler;
+	Player player;
 
-	public Ball(int x, int y, ID id, Handler handler) {
+	public Ball(int x, int y, ID id, Handler handler, Player player) {
 		super(x, y, id);
 		
-		width = 8;
-		height = 8;
+		width = 12;
+		height = 12;
 		radius = width / 2;
-		
-		this.handler = handler;
 		
 		velX = 3;
 		velY = -3;
+		
+		this.handler = handler;	
+		this.player = player;
 	}
-
-	public void tick() {
+	
+	private void move() {
 		x += velX;
 		y += velY;
 		
-		if(y <= 0) velY *= -1;
-		if(x <= 0 || x >= Game.WIDTH - 8) velX *= -1;
-		
-		collision();
-	}
-	
-	public void collision() {
-		for (int i = 0; i < handler.object.size(); i++) {
-			GameObject tempObject = handler.object.get(i);
+		if (!Game.isStart) {			
+			if (x > player.getX() && player.getX() + player.getWidth() > x + width)
+				velX = -player.getVelX()/4;
+			else 
+				velX = player.getVelX();
 			
-			if (tempObject.getID()!=  ID.Ball) {
-				if (Game.intersects(tempObject, this)) {
-					if (x + radius < tempObject.getX() + tempObject.getWidth()/2) {
-						if (y + radius < tempObject.getY() ||
-								y + radius < tempObject.getY() + tempObject.getHeight()) velY *= -1;
-						else velX *= -1;
-					}
-					else {
-						if (y + radius < tempObject.getY() ||
-								y + radius < tempObject.getY() + tempObject.getHeight()) velY *= -1;
-						else velX *= -1;
-					}
-				}
-			}
+			y = player.getY() - height;
 		}
 	}
 
+	public void tick() {
+		
+		move();
+		
+        if(y <= 0) velY *= -1;
+        if(x <= 0 || x >= Game.WIDTH - width) velX *= -1;
+        if(y >= Game.HEIGHT - height) {
+        	Game.isStart = false;
+        	HUD.LIVES--;
+        	x = player.getX() + player.getWidth() / 2 - radius;
+			y = player.getY() - height;
+        }
+
+        collision();
+    }
+
+    public void collision() {
+        for (int i = 0; i < handler.object.size(); i++) {
+            GameObject tempObject = handler.object.get(i);
+
+            if (tempObject.getID() !=  ID.Ball) {
+                if (Game.intersects(tempObject, this)) {
+                    if (tempObject.getID() == ID.BasicBrick)  handler.removeObject(tempObject);
+                    
+                    if (tempObject.getX() <= x + radius &&
+                    		x + radius <= tempObject.getX() + tempObject.getWidth()) velY *= -1;
+                    else velX *= -1;
+                }
+            }
+        }
+    }
+
 	public void render(Graphics g) {
 		g.setColor(Color.red);
-		g.fillOval(x, y, 8, 8);
+		g.fillOval(x, y, width, height);
 	}
 	
 	public int getCenterX() {

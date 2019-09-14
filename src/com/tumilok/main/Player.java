@@ -17,7 +17,7 @@ public class Player extends GameObject {
 		y += velY;
 		
 		x = Game.clamp(x, 0, Game.WIDTH - width);
-		y = Game.clamp(y, 350, 430);
+		y = Game.clamp(y, 350, 420);
 	}
 
 	public void render(Graphics g) {
@@ -25,5 +25,4 @@ public class Player extends GameObject {
 		g.setColor(Color.white);
 		g.fillRect(x, y, width, height);
 	}
-
 }

@@ -4,7 +4,6 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
-import java.util.Random;
 
 public class Game extends Canvas implements Runnable {
 	
@@ -14,9 +13,10 @@ public class Game extends Canvas implements Runnable {
 	
 	private Thread thread;
 	public boolean running = false;
+	public static boolean isStart = false;
 	
 	private Handler handler;
-	private Random rand;
+	private HUD hud;
 	
 	public Game() {
 		handler = new Handler();
@@ -24,12 +24,15 @@ public class Game extends Canvas implements Runnable {
 		
 		new Window(WIDTH, HEIGHT, "Let's Roll!", this);
 		
-		rand = new Random();
+		hud = new HUD();
 		
-		handler.addObject(new Player(256, 430, ID.Player));
-		handler.addObject(new Ball(rand.nextInt(WIDTH) + 1, rand.nextInt(HEIGHT) + 1, ID.Ball, handler));
-		for (int i = 0; i < 7; i++) {
-			for (int j = i; j < 17 - i; j++) {
+		Player player = new Player(256, 420, ID.Player);
+		Ball ball = new Ball(314, 408, ID.Ball, handler, player);
+		
+		handler.addObject(player);
+		handler.addObject(ball);
+		for (int i = 0; i < 7; i+=2) {
+			for (int j = i; j < 17 - i; j+=2) {
 				handler.addObject(new BasicBrick(32 + 34 * j, 64 + 32 * i, ID.BasicBrick));
 			}
 		}
@@ -80,6 +83,7 @@ public class Game extends Canvas implements Runnable {
 	
 	private void tick() {
 		handler.tick();
+		hud.tick();
 	}
 	
 	private void render() {
@@ -95,6 +99,7 @@ public class Game extends Canvas implements Runnable {
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
 		handler.render(g);
+		hud.render(g);
 		
 		g.dispose();
 		bs.show();

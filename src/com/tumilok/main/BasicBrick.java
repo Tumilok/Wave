@@ -8,7 +8,7 @@ public class BasicBrick extends GameObject{
 	public BasicBrick(int x, int y, ID id) {
 		super(x, y, id);
 		
-		width = 32;
+		width = 48;
 		height = 16;
 	}
 
@@ -17,8 +17,7 @@ public class BasicBrick extends GameObject{
 	}
 
 	public void render(Graphics g) {
-		g.setColor(Color.green);
+		g.setColor(Color.orange);
 		g.fillRect(x, y, width, height);
 	}
-
 }
