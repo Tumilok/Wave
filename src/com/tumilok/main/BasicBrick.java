@@ -5,8 +5,8 @@ import java.awt.Graphics;
 
 public class BasicBrick extends GameObject{
 
-	public BasicBrick(int x, int y, ID id) {
-		super(x, y, id);
+	public BasicBrick(int x, int y, ID id, Color color) {
+		super(x, y, id, color);
 		
 		width = 48;
 		height = 16;
@@ -17,7 +17,7 @@ public class BasicBrick extends GameObject{
 	}
 
 	public void render(Graphics g) {
-		g.setColor(Color.orange);
+		g.setColor(color);
 		g.fillRect(x, y, width, height);
 	}
 }

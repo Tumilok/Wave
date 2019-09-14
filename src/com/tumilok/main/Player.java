@@ -5,8 +5,8 @@ import java.awt.Graphics;
 
 public class Player extends GameObject {
 
-	public Player(int x, int y, ID id) {
-		super(x, y, id);
+	public Player(int x, int y, ID id, Color color) {
+		super(x, y, id, color);
 		
 		width = 128;
 		height = 12;
@@ -22,7 +22,7 @@ public class Player extends GameObject {
 
 	public void render(Graphics g) {
 		
-		g.setColor(Color.white);
+		g.setColor(color);
 		g.fillRect(x, y, width, height);
 	}
 }

@@ -26,14 +26,14 @@ public class Game extends Canvas implements Runnable {
 		
 		hud = new HUD();
 		
-		Player player = new Player(256, 420, ID.Player);
-		Ball ball = new Ball(314, 408, ID.Ball, handler, player);
+		Player player = new Player(256, 420, ID.Player, Color.white);
+		Ball ball = new Ball(314, 408, ID.Ball, Color.red, handler);
 		
 		handler.addObject(player);
 		handler.addObject(ball);
 		for (int i = 0; i < 7; i+=2) {
 			for (int j = i; j < 17 - i; j+=2) {
-				handler.addObject(new BasicBrick(32 + 34 * j, 64 + 32 * i, ID.BasicBrick));
+				handler.addObject(new BasicBrick(32 + 34 * j, 64 + 32 * i, ID.BasicBrick, Color.orange));
 			}
 		}
 	}

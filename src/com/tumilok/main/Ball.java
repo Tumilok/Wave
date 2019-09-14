@@ -8,20 +8,17 @@ public class Ball extends GameObject{
 	private int radius;
 	
 	Handler handler;
-	Player player;
 
-	public Ball(int x, int y, ID id, Handler handler, Player player) {
-		super(x, y, id);
+	public Ball(int x, int y, ID id, Color color, Handler handler) {
+		super(x, y, id, color);
 		
 		width = 12;
 		height = 12;
 		radius = width / 2;
 		
-		velX = 3;
 		velY = -3;
 		
-		this.handler = handler;	
-		this.player = player;
+		this.handler = handler;
 	}
 	
 	private void move() {
@@ -29,12 +26,18 @@ public class Ball extends GameObject{
 		y += velY;
 		
 		if (!Game.isStart) {			
-			if (x > player.getX() && player.getX() + player.getWidth() > x + width)
-				velX = -player.getVelX()/4;
-			else 
-				velX = player.getVelX();
-			
-			y = player.getY() - height;
+			for (int i = 0; i < handler.object.size(); i++) {
+				GameObject tempObject = handler.object.get(i);
+				
+				if (tempObject.id == ID.Player) {
+					if (x > tempObject.getX() && tempObject.getX() + tempObject.getWidth() > x + width)
+						velX = -tempObject.getVelX()/4;
+					else 
+						velX = tempObject.getVelX();
+					
+					y = tempObject.getY() - height;
+				}
+			}
 		}
 	}
 
@@ -47,23 +50,32 @@ public class Ball extends GameObject{
         if(y >= Game.HEIGHT - height) {
         	Game.isStart = false;
         	HUD.LIVES--;
-        	x = player.getX() + player.getWidth() / 2 - radius;
-			y = player.getY() - height;
+        	
+        	for (int i = 0; i < handler.object.size(); i++) {
+        		GameObject tempObject = handler.object.get(i);
+        		
+        		if (tempObject.id == ID.Player) {
+        			x = tempObject.getX() + tempObject.getWidth() / 2 - radius;
+        			y = tempObject.getY() - height;
+        		}
+        	}
         }
 
         collision();
+        
+        //handler.addObject(new Trail(x, y, ID.Trail, color, width/2, height/2, 0.01f, handler));
     }
 
-    public void collision() {
+	public void collision() {
         for (int i = 0; i < handler.object.size(); i++) {
             GameObject tempObject = handler.object.get(i);
 
             if (tempObject.getID() !=  ID.Ball) {
                 if (Game.intersects(tempObject, this)) {
                     if (tempObject.getID() == ID.BasicBrick)  handler.removeObject(tempObject);
-                    
-                    if (tempObject.getX() <= x + radius &&
-                    		x + radius <= tempObject.getX() + tempObject.getWidth()) velY *= -1;
+                    if (tempObject.getX() <= x + radius && x + radius <= tempObject.getX() + tempObject.getWidth()){
+                        velY *= -1;
+                    }
                     else velX *= -1;
                 }
             }
@@ -71,7 +83,7 @@ public class Ball extends GameObject{
     }
 
 	public void render(Graphics g) {
-		g.setColor(Color.red);
+		g.setColor(color);
 		g.fillOval(x, y, width, height);
 	}
 	
