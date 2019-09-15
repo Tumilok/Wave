@@ -1,6 +1,5 @@
 package com.tumilok.main;
 
-import java.awt.Color;
 import java.awt.Graphics;
 
 public abstract class GameObject {
@@ -9,13 +8,12 @@ public abstract class GameObject {
 	protected ID id;
 	protected int velX, velY;
 	protected int width, height;
-	protected Color color;
+	protected int health;
 	
-	public GameObject(int x, int y, ID id, Color color) {
+	public GameObject(int x, int y, ID id) {
 		this.x = x;
 		this.y = y;
 		this.id = id;
-		this.color = color;
 	}
 	
 	public abstract void tick();
@@ -75,13 +73,5 @@ public abstract class GameObject {
 	
 	public int getHeight() {
 		return height;
-	}
-	
-	public void setColor(Color color) {
-		this.color = color;
-	}
-	
-	public Color getColor() {
-		return color;
 	}
 }

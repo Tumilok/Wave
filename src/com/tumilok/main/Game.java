@@ -11,12 +11,13 @@ public class Game extends Canvas implements Runnable {
 	
 	public static final int WIDTH = 640, HEIGHT = WIDTH / 12 * 9;
 	
-	private Thread thread;
 	public boolean running = false;
 	public static boolean isStart = false;
 	
+	private Thread thread;
 	private Handler handler;
 	private HUD hud;
+	private Spawn spawn;
 	
 	public Game() {
 		handler = new Handler();
@@ -25,15 +26,19 @@ public class Game extends Canvas implements Runnable {
 		new Window(WIDTH, HEIGHT, "Let's Roll!", this);
 		
 		hud = new HUD();
+		spawn = new Spawn(handler);
 		
 		Player player = new Player(256, 420, ID.Player, Color.white);
 		Ball ball = new Ball(314, 408, ID.Ball, Color.red, handler);
 		
 		handler.addObject(player);
 		handler.addObject(ball);
-		for (int i = 0; i < 7; i+=2) {
-			for (int j = i; j < 17 - i; j+=2) {
-				handler.addObject(new BasicBrick(32 + 34 * j, 64 + 32 * i, ID.BasicBrick, Color.orange));
+		for (int i = 0; i < 7; i++) {
+			for (int j = i; j < 11 - i; j++) {
+				if ((j + i) % 2 == 0)
+					handler.addObject(new BasicBrick(36 + 52 * j, 64 + 32 * i, ID.Brick));
+				else 
+					handler.addObject(new EasyBrick(36 + 52 * j, 64 + 32 * i, ID.Brick));
 			}
 		}
 	}
@@ -84,6 +89,7 @@ public class Game extends Canvas implements Runnable {
 	private void tick() {
 		handler.tick();
 		hud.tick();
+		spawn.tick();
 	}
 	
 	private void render() {

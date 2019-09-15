@@ -4,12 +4,15 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class Player extends GameObject {
+	
+	Color color;
 
 	public Player(int x, int y, ID id, Color color) {
-		super(x, y, id, color);
+		super(x, y, id);
 		
 		width = 128;
 		height = 12;
+		this.color = color;
 	}
 
 	public void tick() {
