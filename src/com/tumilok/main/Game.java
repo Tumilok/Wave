@@ -27,20 +27,6 @@ public class Game extends Canvas implements Runnable {
 		
 		hud = new HUD();
 		spawn = new Spawn(handler);
-		
-		Player player = new Player(256, 420, ID.Player, Color.white);
-		Ball ball = new Ball(314, 408, ID.Ball, Color.red, handler);
-		
-		handler.addObject(player);
-		handler.addObject(ball);
-		for (int i = 0; i < 7; i++) {
-			for (int j = i; j < 11 - i; j++) {
-				if ((j + i) % 2 == 0)
-					handler.addObject(new BasicBrick(36 + 52 * j, 64 + 32 * i, ID.Brick));
-				else 
-					handler.addObject(new EasyBrick(36 + 52 * j, 64 + 32 * i, ID.Brick));
-			}
-		}
 	}
 
 	public synchronized void start() {
