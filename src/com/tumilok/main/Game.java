@@ -9,10 +9,10 @@ public class Game extends Canvas implements Runnable {
 	
 	private static final long serialVersionUID = 1622234583316783243L;
 	
-	public static final int WIDTH = 640, HEIGHT = WIDTH / 12 * 9;
+	public static final int WIDTH = 1024, HEIGHT = 768;
 	
 	public boolean running = false;
-	public static boolean isStart = false;
+	public static boolean isStart;
 	
 	private Thread thread;
 	private Handler handler;
@@ -89,6 +89,8 @@ public class Game extends Canvas implements Runnable {
 		
 		g.setColor(Color.black);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
+		g.setColor(Color.DARK_GRAY);
+		g.fillRect(0,  0,  WIDTH, 40);
 		
 		handler.render(g);
 		hud.render(g);

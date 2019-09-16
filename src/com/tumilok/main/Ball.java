@@ -27,9 +27,8 @@ public class Ball extends GameObject{
         x += velX;
         y += velY;
 
-        velX = Game.clamp(velX, -7, 7);
-        velY = Game.clamp(velY, -7, 7);
-        if (velX == 0) velX = 2;
+        if (velX < 0) velX = -3;
+        else velX = 3;
 
         if (!Game.isStart) {
             for (int i = 0; i < handler.object.size(); i++) {
@@ -51,8 +50,8 @@ public class Ball extends GameObject{
 
         move();
 
-        if(y <= 0) velY *= -1;
-        if(x <= 0 || x >= Game.WIDTH - width) velX *= -1;
+        if(y <= 40) velY *= -1;
+        if(x <= 0 || x >= Game.WIDTH - (width + radius)) velX *= -1;
         if(y >= Game.HEIGHT - height) {
             Game.isStart = false;
             HUD.LIVES--;
@@ -78,15 +77,11 @@ public class Ball extends GameObject{
                 if (Game.intersects(tempObject, this)) {
 
                     if (tempObject.getID() == ID.Brick) {
-                    	tempObject.health--;
-                    	if (tempObject.health < 1) {
-                    		handler.removeObject(tempObject);
-                    		HUD.score++;
-                    	}
-                    }
-                    else {
-                        velX += tempObject.getVelX() / 5;
-                        velY -= tempObject.getVelY() / 5;
+                        tempObject.health--;
+                        if (tempObject.health < 1) {
+                            handler.removeObject(tempObject);
+                            HUD.score++;
+                        }
                     }
 
                     sideDetection(tempObject);

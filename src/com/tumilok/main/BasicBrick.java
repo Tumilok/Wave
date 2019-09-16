@@ -16,12 +16,14 @@ public class BasicBrick extends GameObject{
 	}
 
 	public void tick() {
-		greenValue = 255 - health * 100;
+		greenValue = 253 - health * 50;
 		
 	}
 
 	public void render(Graphics g) {
-		g.setColor(new Color(50, greenValue, 100));
+		g.setColor(new Color(255, greenValue, 0));
 		g.fillRect(x, y, width, height);
+		g.setColor(Color.pink);
+		g.drawRect(x, y, width, height);
 	}
 }
