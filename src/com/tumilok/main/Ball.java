@@ -2,53 +2,31 @@ package com.tumilok.main;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.Random;
 
 public class Ball extends GameObject{
 
     private int radius;
 
-    Color color;
     Handler handler;
+    Random rand;
 
-    public Ball(int x, int y, ID id, Color color, Handler handler) {
+    public Ball(int x, int y, ID id, int width, int height, Handler handler) {
         super(x, y, id);
 
-        width = 12;
-        height = 12;
-        radius = width / 2;
-
-        velY = -3;
-
+        this.width = width;
+        this.height = height;
         this.handler = handler;
-        this.color = color;
-    }
 
-    private void move() {
-        x += velX;
-        y += velY;
-
-        if (velX < 0) velX = -3;
-        else velX = 3;
-
-        if (!Game.isStart) {
-            for (int i = 0; i < handler.object.size(); i++) {
-                GameObject tempObject = handler.object.get(i);
-
-                if (tempObject.id == ID.Player) {
-                    if (x > tempObject.getX() && tempObject.getX() + tempObject.getWidth() > x + width)
-                        velX = tempObject.getVelX()/5;
-                    else
-                        velX = tempObject.getVelX();
-
-                    y = tempObject.getY() - height;
-                }
-            }
-        }
+        radius = width / 2;
+        velY = -3;
+        rand = new Random();
     }
 
     public void tick() {
 
         move();
+        collision();
 
         if(y <= 40) velY *= -1;
         if(x <= 0 || x >= Game.WIDTH - (width + radius)) velX *= -1;
@@ -65,24 +43,35 @@ public class Ball extends GameObject{
                 }
             }
         }
-
-        collision();
     }
 
-    public void collision() {
+    private void move() {
+        x += velX;
+        y += velY;
+
+        if (velX < 0) velX = -3;
+        else velX = 3;
+
+        if (!Game.isStart) {
+            int i = 0;
+            while (handler.object.get(i).id != ID.Player) i++;
+            GameObject tempObject = handler.object.get(i);
+
+            velX = tempObject.getVelX()/2;
+
+            x = Game.clamp(x, tempObject.getX(), tempObject.getX() + tempObject.getWidth() - width);
+            y = tempObject.getY() - height;
+        }
+    }
+
+    private void collision() {
         for (int i = 0; i < handler.object.size(); i++) {
             GameObject tempObject = handler.object.get(i);
 
-            if (tempObject.getID() !=  ID.Ball) {
-                if (Game.intersects(tempObject, this)) {
-
-                    if (tempObject.getID() == ID.Brick) {
+            if (tempObject.getID() ==  ID.Player || tempObject.getID() == ID.Brick) {
+                if (intersects(tempObject)) {
+                    if (tempObject.getID() == ID.Brick)
                         tempObject.health--;
-                        if (tempObject.health < 1) {
-                            handler.removeObject(tempObject);
-                            HUD.score++;
-                        }
-                    }
 
                     sideDetection(tempObject);
                 }
@@ -90,7 +79,17 @@ public class Ball extends GameObject{
         }
     }
 
-    public void sideDetection(GameObject tempObject){
+    private boolean intersects(GameObject rect)
+    {
+        int DeltaX = x + radius - Math.max(rect.getX(),
+                Math.min(x + radius, rect.getX() + rect.getWidth()));
+        int DeltaY = y + radius - Math.max(rect.getY(),
+                Math.min(y + radius, rect.getY() + rect.getHeight()));
+
+        return (DeltaX * DeltaX + DeltaY * DeltaY) < (radius * radius);
+    }
+
+    private void sideDetection(GameObject tempObject){
         if (x < tempObject.getX()){
             if (y < tempObject.getY()) {
                 velY = -Math.abs(velY);
@@ -115,19 +114,7 @@ public class Ball extends GameObject{
     }
 
     public void render(Graphics g) {
-        g.setColor(color);
+        g.setColor(Color.red);
         g.fillOval(x, y, width, height);
-    }
-
-    public int getCenterX() {
-        return x + radius;
-    }
-
-    public int getCenterY() {
-        return y + radius;
-    }
-
-    public int getRadius() {
-        return radius;
     }
 }
