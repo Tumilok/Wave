@@ -2,14 +2,12 @@ package com.tumilok.main;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.Random;
 
 public class Ball extends GameObject{
 
     private int radius;
 
     Handler handler;
-    Random rand;
 
     public Ball(int x, int y, ID id, int width, int height, Handler handler) {
         super(x, y, id);
@@ -20,7 +18,6 @@ public class Ball extends GameObject{
 
         radius = width / 2;
         velY = -3;
-        rand = new Random();
     }
 
     public void tick() {
@@ -49,8 +46,8 @@ public class Ball extends GameObject{
         x += velX;
         y += velY;
 
-        if (velX < 0) velX = -3;
-        else velX = 3;
+        if (velX < 0) velX = -Math.abs(velY);
+        else velX = Math.abs(velY);
 
         if (!Game.isStart) {
             int i = 0;
