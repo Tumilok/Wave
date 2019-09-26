@@ -12,7 +12,7 @@ public class HUD {
 
     public void tick() {
         LIVES = Game.clamp(LIVES, 0, 3);
-        if (LIVES <= 0) System.exit(1);
+        if (LIVES <= 0) Game.gameState = State.End;
 
         greenValue = LIVES*50;
         redValue = 250 - LIVES*60;

@@ -27,7 +27,7 @@ public class BasicBrick extends GameObject{
         greenValue = 253 - health * 50;
 
         if (health < 1) {
-            if (rand.nextInt(2) == 1)
+            if (rand.nextInt(3) == 1)
                 handler.addObject(new Bonus(x, y, ID.Bonus, handler));
             handler.removeObject(this);
             HUD.score++;

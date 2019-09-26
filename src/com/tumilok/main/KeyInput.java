@@ -28,8 +28,22 @@ public class KeyInput extends KeyAdapter {
             }
         }
 
-        if (key == KeyEvent.VK_SPACE) Game.isStart = true;
-        if (key == KeyEvent.VK_ESCAPE) System.exit(1);
+        if (key == KeyEvent.VK_SPACE) {
+        	if(Game.gameState == State.Game){
+        		Game.isStart = true;
+        	}
+        }
+        if (key == KeyEvent.VK_ESCAPE){
+            if (Game.gameState == State.Game) Game.gameState = State.Menu;
+            else if (Game.gameState == State.Help) Game.gameState = State.Menu;
+            else if (Game.gameState == State.Menu) Game.gameState = State.Exit;
+            else if (Game.gameState == State.Exit) Game.gameState = State.Menu;
+        }
+        if (key == KeyEvent.VK_ENTER) {
+        	if (Game.gameState == State.Exit) {
+        		System.exit(0);
+        	}
+        }
     }
 
     public void keyReleased(KeyEvent e) {

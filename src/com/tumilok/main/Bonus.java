@@ -111,7 +111,7 @@ public class Bonus extends GameObject {
 
    }
 
-   private void ballSizeIncrease(GameObject tempObject) {
+    private void ballSizeIncrease(GameObject tempObject) {
         if (tempObject.getWidth() > 12) return;
         Ball ball = new Ball(tempObject.getX(), tempObject.getY(), ID.Ball,
                 tempObject.getWidth()*2, tempObject.getHeight()*2, handler);

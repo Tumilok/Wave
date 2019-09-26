@@ -18,10 +18,15 @@ public class Game extends Canvas implements Runnable {
     private Handler handler;
     private HUD hud;
     private Spawn spawn;
+    public static State gameState = State.Menu;
+    private Menu menu;
 
     public Game() {
         handler = new Handler();
         this.addKeyListener(new KeyInput(handler));
+
+        menu = new Menu();
+        this.addMouseListener(menu);
 
         new Window(WIDTH, HEIGHT, "Let's Roll!", this);
 
@@ -73,9 +78,14 @@ public class Game extends Canvas implements Runnable {
     }
 
     private void tick() {
-        handler.tick();
-        hud.tick();
-        spawn.tick();
+        if (gameState == State.Game) {
+            handler.tick();
+            hud.tick();
+            spawn.tick();
+        }else if(gameState == State.Menu || gameState == State.Help 
+        		|| gameState == State.End || gameState == State.Exit) {
+            menu.tick();
+        }
     }
 
     private void render() {
@@ -89,11 +99,16 @@ public class Game extends Canvas implements Runnable {
 
         g.setColor(Color.black);
         g.fillRect(0, 0, WIDTH, HEIGHT);
+
         g.setColor(Color.DARK_GRAY);
         g.fillRect(0,  0,  WIDTH, 40);
-
+        
         handler.render(g);
         hud.render(g);
+    
+        if(gameState != State.Game) {
+        	menu.render(g);
+        }
 
         g.dispose();
         bs.show();
