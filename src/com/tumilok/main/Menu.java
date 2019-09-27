@@ -11,29 +11,44 @@ public class Menu extends MouseAdapter {
         int my = e.getY();
 
         if (Game.gameState == State.Menu) {
-
+        	
             if (mouseOver(mx, my, 362, 275, 300, 68)) {
                 Game.gameState = State.Game;
             } else if (mouseOver(mx, my, 362, 375, 300, 68)) {
-                Game.gameState = State.Help;
+                Game.gameState = State.MenuHelp;
             } else if (mouseOver(mx, my, 362, 475, 300, 68)) {
                 Game.gameState = State.Exit;
             }
         }
-
-        if (Game.gameState == State.Help) {
+        else if (Game.gameState == State.Pause) {
+        	
+        	if (mouseOver(mx, my, 362, 275, 300, 68)) {
+                Game.gameState = State.Game;
+            } else if (mouseOver(mx, my, 362, 375, 300, 68)) {
+                Game.gameState = State.PauseHelp;
+            } else if (mouseOver(mx, my, 362, 475, 300, 68)) {
+                Game.gameState = State.Menu;
+                Game.newGame = true;
+            }
+        }
+        else if (Game.gameState == State.MenuHelp) {
+        	
             if (mouseOver(mx, my, 362, 600, 300, 68)) {
                 Game.gameState = State.Menu;
             }
         }
-
-        if (Game.gameState == State.End) {
+        else if (Game.gameState == State.PauseHelp) {
+        	
+            if (mouseOver(mx, my, 362, 600, 300, 68)) {
+                Game.gameState = State.Pause;
+            }
+        }
+        else if (Game.gameState == State.End) {
             if (mouseOver(mx, my, 362, 600, 300, 68)) {
                 Game.gameState = State.Menu;
             }
         }
-        
-        if (Game.gameState == State.Exit) {
+        else if (Game.gameState == State.Exit) {
             if (mouseOver(mx, my, 340, 350, 150, 50)) {
                 System.exit(0);
             }
@@ -69,7 +84,7 @@ public class Menu extends MouseAdapter {
     	
         if (Game.gameState == State.Menu) {
             g.setFont(fnt);
-            g.drawString("WAVE", 410, 150);
+            g.drawString("WAVE", 410, 90);
 
             g.setFont(fnt2);
             g.drawRect(362, 275, 300, 68);
@@ -79,19 +94,54 @@ public class Menu extends MouseAdapter {
             g.drawRect(362, 475, 300, 68);
             g.drawString("Exit", 465, 525);
         }
-        else if (Game.gameState == State.Help) {
-            
+        else if (Game.gameState == State.Pause) {
+        	g.setFont(fnt);
+            g.drawString("Pause", 410, 150);
 
+            g.setFont(fnt2);
+            g.drawRect(362, 275, 300, 68);
+            g.drawString("Resume", 420, 325);
+            g.drawRect(362, 375, 300, 68);
+            g.drawString("Help", 465, 425);
+            g.drawRect(362, 475, 300, 68);
+            g.drawString("Quit", 465, 525);
+        }
+        else if (Game.gameState == State.MenuHelp || Game.gameState == State.PauseHelp) {
             g.setFont(fnt);
-            g.drawString("HELP", 410, 150);
+            g.drawString("HELP", 410, 90);
             g.drawRect(362, 600, 300, 68);
 
             g.setFont(fnt2);
             g.drawString("Back", 460, 650);
 
             g.setFont(fnt3);
-            g.drawString("Press Space button to start the game.", 100, 300);
+            g.drawString("Press Space button to make ball move.", 100, 300);
             g.drawString("Use WASD or Up, Down, Left, Right buttons to move platform", 100, 325);
+            g.drawString("Bonuses:", 100, 375);
+            g.setColor(Color.blue);
+            g.fillOval(100, 390, 16, 8);
+            g.setColor(Color.white);
+            g.drawString("Decreases width of the platform", 125, 400);
+            g.setColor(Color.CYAN);
+            g.fillOval(100, 415, 16, 8);
+            g.setColor(Color.white);
+            g.drawString("Increases width of the platform", 125, 425);
+            g.setColor(Color.GRAY);
+            g.fillOval(100, 440, 16, 8);
+            g.setColor(Color.white);
+            g.drawString("Increases spead of the ball", 125, 450);
+            g.setColor(Color.green);
+            g.fillOval(100, 465, 16, 8);
+            g.setColor(Color.white);
+            g.drawString("Decreases spead of the ball", 125, 475);
+            g.setColor(Color.magenta);
+            g.fillOval(100, 490, 16, 8);
+            g.setColor(Color.white);
+            g.drawString("Decreases size of the ball", 125, 500);
+            g.setColor(Color.orange);
+            g.fillOval(100, 515, 16, 8);
+            g.setColor(Color.white);
+            g.drawString("Increases size of the ball", 125, 525);
         }
         else if (Game.gameState == State.End) {
             g.setFont(fnt2);
@@ -102,7 +152,7 @@ public class Menu extends MouseAdapter {
         }
         else if (Game.gameState == State.Exit) { 
             g.setFont(fnt);
-            g.drawString("WAVE", 410, 150);
+            g.drawString("WAVE", 410, 90);
            
         	g.drawRect(312, 250, 400, 200);
             g.setFont(fnt4);

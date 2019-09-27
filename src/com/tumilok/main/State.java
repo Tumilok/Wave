@@ -2,7 +2,9 @@ package com.tumilok.main;
 
 public enum State {
     Menu(),
-    Help(),
+    Pause(),
+    PauseHelp(),
+    MenuHelp(),
     Game(),
     End(),
     Exit();

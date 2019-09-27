@@ -4,5 +4,8 @@ public enum ID {
     Player(),
     Ball(),
     Brick(),
-    Bonus();
+    Bonus(),
+	MenuBrick(),
+	BotPlatform(),
+	MenuBall();
 }

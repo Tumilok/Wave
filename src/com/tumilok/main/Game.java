@@ -13,6 +13,7 @@ public class Game extends Canvas implements Runnable {
 
     public boolean running = false;
     public static boolean isStart;
+    public static boolean newGame = false;
 
     private Thread thread;
     private Handler handler;
@@ -20,6 +21,8 @@ public class Game extends Canvas implements Runnable {
     private Spawn spawn;
     public static State gameState = State.Menu;
     private Menu menu;
+    private BackgroundSpawn backgroundSpawn;
+    private Handler menuHandler;
 
     public Game() {
         handler = new Handler();
@@ -27,11 +30,14 @@ public class Game extends Canvas implements Runnable {
 
         menu = new Menu();
         this.addMouseListener(menu);
+        
+        menuHandler = new Handler();
 
         new Window(WIDTH, HEIGHT, "Let's Roll!", this);
 
         hud = new HUD();
         spawn = new Spawn(handler);
+        backgroundSpawn = new BackgroundSpawn(menuHandler);
     }
 
     public synchronized void start() {
@@ -82,9 +88,12 @@ public class Game extends Canvas implements Runnable {
             handler.tick();
             hud.tick();
             spawn.tick();
-        }else if(gameState == State.Menu || gameState == State.Help 
-        		|| gameState == State.End || gameState == State.Exit) {
+        }else {
             menu.tick();
+            if (gameState == State.Menu || gameState == State.Exit) {
+	            backgroundSpawn.tick();
+	            menuHandler.tick();
+            }
         }
     }
 
@@ -100,13 +109,18 @@ public class Game extends Canvas implements Runnable {
         g.setColor(Color.black);
         g.fillRect(0, 0, WIDTH, HEIGHT);
 
-        g.setColor(Color.DARK_GRAY);
-        g.fillRect(0,  0,  WIDTH, 40);
+        if (gameState == State.Game || gameState == State.Pause) {
+        	g.setColor(Color.DARK_GRAY);
+        	g.fillRect(0,  0,  WIDTH, 40);
+               
+	        handler.render(g);
+	        hud.render(g);
+        }
         
-        handler.render(g);
-        hud.render(g);
-    
         if(gameState != State.Game) {
+        	if (gameState == State.Menu || gameState == State.Exit) {
+        		menuHandler.render(g);
+        	}
         	menu.render(g);
         }
 

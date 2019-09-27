@@ -33,6 +33,18 @@ public class Spawn {
             else if (HUD.level == 2) level2();
             else if (HUD.level == 3) level3();
         }
+        
+        if (Game.newGame) {
+        	int size = handler.object.size();
+            for (int i = 0; i < size; i++) {
+                handler.removeObject(handler.object.get(0));
+            }
+            HUD.level = 1;
+            HUD.score = 0;
+            HUD.LIVES = 3;
+            isLevel = true;
+            Game.newGame = false;
+        }
     }
 
     private void level1 () {
