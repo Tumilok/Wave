@@ -67,6 +67,9 @@ public class Ball extends GameObject{
 
             if (tempObject.getID() ==  ID.Player || tempObject.getID() == ID.Brick) {
                 if (intersects(tempObject)) {
+                	
+                	AudioPlayer.getSound("ballsound").loop(1);
+                    
                     if (tempObject.getID() == ID.Brick)
                         tempObject.health--;
 

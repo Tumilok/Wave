@@ -12,7 +12,10 @@ public class HUD {
 
     public void tick() {
         LIVES = Game.clamp(LIVES, 0, 3);
-        if (LIVES <= 0) Game.gameState = State.End;
+        if (LIVES <= 0) {
+        	Game.gameState = State.End;
+        	AudioPlayer.getSound("backgroundmusic").loop(1000);
+        }
 
         greenValue = LIVES*50;
         redValue = 250 - LIVES*60;

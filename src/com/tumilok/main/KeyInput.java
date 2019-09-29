@@ -34,16 +34,25 @@ public class KeyInput extends KeyAdapter {
         	}
         }
         if (key == KeyEvent.VK_ESCAPE){
-            if (Game.gameState == State.Game) Game.gameState = State.Pause;
+            if (Game.gameState == State.Game) {
+            	Game.gameState = State.Pause;
+            	AudioPlayer.getSound("backgroundmusic").loop(1000);
+            }
             else if (Game.gameState == State.MenuHelp) Game.gameState = State.Menu;
             else if (Game.gameState == State.PauseHelp) Game.gameState = State.Pause;
             else if (Game.gameState == State.Menu) Game.gameState = State.Exit;
-            else if (Game.gameState == State.Pause) Game.gameState = State.Game;
+            else if (Game.gameState == State.Pause) {
+            	Game.gameState = State.Game;
+            	AudioPlayer.getSound("backgroundmusic").stop();
+            }
+            else if (Game.gameState == State.Quit) Game.gameState = State.Pause;
             else if (Game.gameState == State.Exit) Game.gameState = State.Menu;
         }
         if (key == KeyEvent.VK_ENTER) {
-        	if (Game.gameState == State.Exit) {
-        		System.exit(0);
+        	if (Game.gameState == State.Exit) System.exit(0);
+        	else if (Game.gameState == State.Quit) {
+        		Game.gameState = State.Menu;
+        		Game.newGame = true;
         	}
         }
     }

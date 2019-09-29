@@ -34,10 +34,15 @@ public class Game extends Canvas implements Runnable {
         menuHandler = new Handler();
 
         new Window(WIDTH, HEIGHT, "Let's Roll!", this);
-
+        
         hud = new HUD();
         spawn = new Spawn(handler);
-        backgroundSpawn = new BackgroundSpawn(menuHandler);
+        backgroundSpawn = new BackgroundSpawn(menuHandler);     
+        
+        AudioPlayer.load("res/background-music1.wav", "backgroundmusic");
+        AudioPlayer.load("res/Paddle ball hit 1.wav", "ballsound");
+        
+        AudioPlayer.getSound("backgroundmusic").loop(1000);
     }
 
     public synchronized void start() {
@@ -90,7 +95,8 @@ public class Game extends Canvas implements Runnable {
             spawn.tick();
         }else {
             menu.tick();
-            if (gameState == State.Menu || gameState == State.Exit) {
+            if (gameState == State.Menu || gameState == State.Exit ||
+            		gameState == State.MenuHelp || gameState == State.PauseHelp) {
 	            backgroundSpawn.tick();
 	            menuHandler.tick();
             }
@@ -109,7 +115,7 @@ public class Game extends Canvas implements Runnable {
         g.setColor(Color.black);
         g.fillRect(0, 0, WIDTH, HEIGHT);
 
-        if (gameState == State.Game || gameState == State.Pause) {
+        if (gameState == State.Game || gameState == State.Pause || gameState == State.Quit) {
         	g.setColor(Color.DARK_GRAY);
         	g.fillRect(0,  0,  WIDTH, 40);
                
@@ -118,7 +124,8 @@ public class Game extends Canvas implements Runnable {
         }
         
         if(gameState != State.Game) {
-        	if (gameState == State.Menu || gameState == State.Exit) {
+        	if (gameState == State.Menu || gameState == State.Exit ||
+        			gameState == State.MenuHelp || gameState == State.PauseHelp) {
         		menuHandler.render(g);
         	}
         	menu.render(g);

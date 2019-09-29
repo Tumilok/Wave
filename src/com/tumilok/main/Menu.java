@@ -14,6 +14,7 @@ public class Menu extends MouseAdapter {
         	
             if (mouseOver(mx, my, 362, 275, 300, 68)) {
                 Game.gameState = State.Game;
+                AudioPlayer.getSound("backgroundmusic").stop();
             } else if (mouseOver(mx, my, 362, 375, 300, 68)) {
                 Game.gameState = State.MenuHelp;
             } else if (mouseOver(mx, my, 362, 475, 300, 68)) {
@@ -24,11 +25,11 @@ public class Menu extends MouseAdapter {
         	
         	if (mouseOver(mx, my, 362, 275, 300, 68)) {
                 Game.gameState = State.Game;
+                AudioPlayer.getSound("backgroundmusic").stop();
             } else if (mouseOver(mx, my, 362, 375, 300, 68)) {
                 Game.gameState = State.PauseHelp;
             } else if (mouseOver(mx, my, 362, 475, 300, 68)) {
-                Game.gameState = State.Menu;
-                Game.newGame = true;
+                Game.gameState = State.Quit;
             }
         }
         else if (Game.gameState == State.MenuHelp) {
@@ -46,6 +47,16 @@ public class Menu extends MouseAdapter {
         else if (Game.gameState == State.End) {
             if (mouseOver(mx, my, 362, 600, 300, 68)) {
                 Game.gameState = State.Menu;
+                Game.newGame = true;
+            }
+        }
+        else if (Game.gameState == State.Quit) {
+        	if (mouseOver(mx, my, 340, 350, 150, 50)) {
+        		Game.gameState = State.Menu;
+        		Game.newGame = true;
+            }
+            else if (mouseOver(mx, my, 534, 350, 150, 50)) {
+            	Game.gameState = State.Pause;
             }
         }
         else if (Game.gameState == State.Exit) {
@@ -148,7 +159,19 @@ public class Menu extends MouseAdapter {
             g.drawString("Game Over!", 400, 300);
             g.drawString("Your Score is: " + HUD.score, 340, 350);
             g.drawRect(362, 600, 300, 68);
-            g.drawString("Back", 465, 650);
+            g.drawString("Back", 460, 650);
+        }
+        else if (Game.gameState == State.Quit) { 
+            g.setFont(fnt);
+            g.drawString("WAVE", 410, 90);
+           
+        	g.drawRect(312, 250, 400, 200);
+            g.setFont(fnt4);
+            g.drawString("Do you really want to Quit?", 340, 300);
+            g.drawRect(340, 350, 150, 50);
+            g.drawString("YES", 385, 385);
+            g.drawRect(534, 350, 150, 50);
+            g.drawString("NO", 590, 385);
         }
         else if (Game.gameState == State.Exit) { 
             g.setFont(fnt);

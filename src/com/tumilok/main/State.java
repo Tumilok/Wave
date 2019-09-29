@@ -7,5 +7,6 @@ public enum State {
     MenuHelp(),
     Game(),
     End(),
+    Quit(),
     Exit();
 }
